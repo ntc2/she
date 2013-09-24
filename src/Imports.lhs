@@ -12,7 +12,7 @@
 > import ShesHers
 
 > tryReadFile :: FilePath -> IO String
-> tryReadFile s = catch (readFile s) $ \ e ->
+> tryReadFile s = catchIOError (readFile s) $ \ e ->
 >  if isDoesNotExistError e then return "" else ioError e
 
 > pImport :: P Tok [String]
