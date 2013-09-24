@@ -1,0 +1,183 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head profile="http://gmpg.org/xfn/1">
+	<title>The Strathclyde Haskell Enhancement</title>
+	
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	
+	<link rel="stylesheet" href="layout.css" type="text/css" media="screen" />
+
+	<style type="text/css" media="screen">
+
+		/* BEGIN IMAGE CSS */
+			/*	To accomodate differing install paths of WordPress, images are referred only here,
+				and not in the wp-layout.css file. If you prefer to use only CSS for colors and what
+				not, then go right ahead and delete the following lines, and the image files. */
+			
+			body	 	{ background: url("webstuff/kubrickbgcolor.jpg"); }				
+			#page		{ background: url("webstuff/kubrickbgwide.jpg") repeat-y top; border: none; } 			
+			#header 	{ background: url("webstuff/kubrickheader.jpg") no-repeat bottom center; }
+			#footer 	{ background: url("webstuff/kubrickfooter.jpg") no-repeat bottom; border: none;}
+			
+			
+			/*	Because the template is slightly different, size-wise, with images, this needs to be set here
+				If you don't want to use the template's images, you can also delete the following two lines. */
+			
+			#header 	{ margin: 0 !important; margin: 0 0 0 1px; padding: 1px; height: 204px; width: 758px; }
+			#headerimg 	{ margin: 7px 9px 0; height: 190px; width: 740px; } 
+		/* END IMAGE CSS */
+		
+	</style>
+<meta name='ICBM' content="0, 0" />
+<meta name='DC.title' content="The Strathclyde Haskell Enhancement" />
+<meta name='geo.position' content="0;0" />
+</head>
+<body>
+
+<div id="page">
+
+<div id="header">
+
+	<div id="headerimg">
+		<h1>she's cutting and pasting it</h1>
+<div class="description">higgledy piggledy programming</div>
+
+
+	</div>
+</div>
+<hr />
+	<div id="content" class="widecolumn">
+
+
+
+<div class="post"><h2>slice by feature</h2>
+<p>
+  In the Epigram-hacking business, we run slap bang into the
+  <a href="http://www.daimi.au.dk/~madst/tool/papers/expression.txt">Expression Problem</a>
+  all the time. Let me be clear that this is <i>not</i> a solution. It's just a cheap
+  presentational trick.
+  </p>
+  <p>
+  We're implementing a programming language. It has a bunch of features, each of which
+  contributes to the syntax, the typing rules, the evaluation rules, and all sorts of
+  other stuff. We work in a functional setting where datatypes are closed: adding new
+  functions is easy; adding new data is hard. Adding a new feature to the language means
+  scattering small changes all over the codebase. I always forget a few, which causes
+  embarrassing match failures, but what's worse is the code comprehension and documentation
+  problem. I'd much rather write (or read) a piece about, say, how quotient types are
+  implemented, than to have to pick through a zillion different files to what's going on
+  and whether it holds together.
+  </p>
+  <p>
+  So here's a mechanism to keep code in files you might want to read, but compile it
+  in the right place anyway. It's a bit of a rickety hack, and the syntax is highly
+  dubious: suggestions for improvement welcome!
+  </p>
+</div>
+
+<div class="post"><h2>code accumulation</h2>
+<p>
+  A <b>code accumulation</b> is a bunch of lines of code, named by a Capitalized identifier.
+  You send code to an accumulation like this:
+  <blockquote>
+  import -> MyAccumulation where <br/>
+  &nbsp; myLine1<br/>
+  &nbsp; myLine2<br/>
+  &nbsp; myLine3<br/>
+  </blockquote></p><p>
+  You dump the whole of an accumulation into your code with a line like this:
+  <blockquote>
+  import &lt;- MyAccumulation
+  </blockquote></p><p>
+  She replaces the latter with all the hunks of code accumulated from the former, in an
+  unspecified order, and at the indentation level of the import. You don't have to be
+  pernickety about counting spaces, but scope and type checking don't happen until
+  after the reassembly happens.
+  </p>
+  <p>
+  In any given module, code blocks are accumulated from the module itself, and inherited
+  from the .hers files of imported modules: they vanish from the source itself, but are
+  exported in the .hers file for the module at hand. Once these blocks have been whipped
+  out, any accumulations imported get pasted in. This happens before she does all the other
+  stuff, so you can have blocks of <a href="patsy.html">pattern synonyms</a> or whatever.
+  </p>
+  <p>Export before import means you can use this stuff even within one module. But it also
+  means you can't build new accumulations by combining old ones.
+  </p>
+</div>
+
+<div class="post"><h2>example</h2>
+<p>
+I define an expression language with variables, and maybe some other stuff.
+  <blockquote>
+  data Exp :: * -> * where <br/>
+  &nbsp; V :: x -> Exp x <br/>
+  &nbsp; import &lt;- Exp<br/>
+  &nbsp; deriving Show
+  </blockquote>
+  </p>
+<p>
+I'm not using 6.12 yet, so I've got to write my own Traversable instance.
+  <blockquote>
+  instance Functor Traversable where <br/>
+  &nbsp; traverse f (V x) = V &lt;$> f x <br/>
+  &nbsp; import &lt;- TravExp
+  </blockquote>
+</p>
+  <p>
+I write an evaluator for expressions
+  <blockquote>
+  eval :: Exp x -> (x -> Val) -> Val<br/>
+  eval (V x) = ($ x)<br/>
+  import &lt;- EvalExp
+  </blockquote>
+  </p>
+<p> By Hutton's Razor, Val is Int, and we need
+  <blockquote>
+  import -> Exp where<br/>
+  &nbsp; N :: Int -> Exp x<br/>
+  &nbsp; (:+:) :: Exp x -> Exp x -> Exp x<br/>
+  import -> TravExp where<br/>
+  &nbsp; traverse f (N i) = pure (I i)<br/>
+  &nbsp; traverse f (s :+: t) = pure (:+:) &lt;$> traverse f s &lt;*> traverse f t<br/>
+  import -> EvalExp where<br/>
+  &nbsp; eval (N i) = pure i<br/>
+  &nbsp; eval (s :+: t) = pure (+) &lt;$> eval s &lt;*> eval t<br/>
+  </blockquote>
+  </p>
+  <p>
+  As long as the module import trail passes the chunks along, it'll all work swimmingly.
+  </p>
+  <p>
+  For a longer example, see <a href="examples/Pig.lhs">Pig.lhs</a>
+  importing from  <a href="examples/Hig.lhs">Hig.lhs</a> and
+  <a href="examples/Jig.lhs">Jig.lhs</a>, trying out various language features
+  for compatibility.
+  </p>
+</div>
+
+
+<div class="post"><h2>gremlins</h2>
+  <ul>
+    <li>Judicious use of the line pragmas would be a considerable boon here, relating
+        errors back to their actual source locations.</li>
+    <li>No recursive imports.</li>
+    <li>You can't accumulate imports.</li>
+    <li>You can easily engineer to duplicate stuff.  </li>
+    </ul>
+</div>
+
+
+		</div>
+
+
+
+<div id="footer">
+	<p>
+ this page uses parts of the Kubrick wordpress style,
+   as knocked about a bit by Peter Morris, then travestied by Conor
+	</p>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,109 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head profile="http://gmpg.org/xfn/1">
+	<title>The Strathclyde Haskell Enhancement</title>
+	
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	
+	<link rel="stylesheet" href="layout.css" type="text/css" media="screen" />
+
+	<style type="text/css" media="screen">
+
+		/* BEGIN IMAGE CSS */
+			/*	To accomodate differing install paths of WordPress, images are referred only here,
+				and not in the wp-layout.css file. If you prefer to use only CSS for colors and what
+				not, then go right ahead and delete the following lines, and the image files. */
+			
+			body	 	{ background: url("webstuff/kubrickbgcolor.jpg"); }				
+			#page		{ background: url("webstuff/kubrickbgwide.jpg") repeat-y top; border: none; } 			
+			#header 	{ background: url("webstuff/kubrickheader.jpg") no-repeat bottom center; }
+			#footer 	{ background: url("webstuff/kubrickfooter.jpg") no-repeat bottom; border: none;}
+			
+			
+			/*	Because the template is slightly different, size-wise, with images, this needs to be set here
+				If you don't want to use the template's images, you can also delete the following two lines. */
+			
+			#header 	{ margin: 0 !important; margin: 0 0 0 1px; padding: 1px; height: 204px; width: 758px; }
+			#headerimg 	{ margin: 7px 9px 0; height: 190px; width: 740px; } 
+		/* END IMAGE CSS */
+		
+	</style>
+<meta name='ICBM' content="0, 0" />
+<meta name='DC.title' content="The Strathclyde Haskell Enhancement" />
+<meta name='geo.position' content="0;0" />
+</head>
+<body>
+
+<div id="page">
+
+<div id="header">
+
+	<div id="headerimg">
+		<h1>she's just a patsy</h1>
+<div class="description">pattern synonyms</div>
+
+
+	</div>
+</div>
+<hr />
+	<div id="content" class="widecolumn">
+
+
+
+<div class="post"><h2>what's a pattern synonym?</h2>
+<p>
+  <a href="./">She</a> lets you make declarations of this form:
+  <blockquote>
+  <b>pattern</b> <i>Cid</i> <i>var</i>* <b>=</b> <i>cform</i> <br/>
+  &nbsp; <br/>
+  <i>cform</i> ::=  <i>var</i> | <i>Cid</i> <i>cform</i>*<br/>
+  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp; 
+        | <b>(</b><i>cform</i><b>,</b>..<b>)</b>
+        | <b>[</b><i>cform</i><b>,</b>..<b>]</b>
+        | <i>Cid</i> <b>{</b><i>var</i><b>=</b><i>cform</i><b>,</b>..<b>}</b>
+  </blockquote>
+  </p>
+  <p> A pattern synonym is a <i>defined</i> Constructor. You abstract over a
+  bunch of parameters, and you should make sure these and no others are used
+  <i>linearly</i> (exactly once) in the definiens. You should make sure, because
+  she won't. You can use pattern synonyms as an abbreviation mechanism in both
+  patterns and expressions, hence the name. Partial application is permitted
+  in expressions.
+  </p>
+  <p>
+  The idea goes back to a 1992 tech report
+  <a href="http://people.cs.uchicago.edu/~jhr/papers/1992/tr-sml-const.pdf"><i>Abstract
+  Value Constructors</i></a> by Aitken and Reppy (with an ML Workshop paper the
+  same year).
+  </p>
+</div>
+<div class="post"><h2>why pattern synonyms?</h2>
+<p>
+  I like <i>coding</i> datatypes &mdash; building them from simple algebraic components.
+</p>
+</div>
+<div class="post"><h2>don't view patterns do this?</h2>
+<p>
+  If you think so, go ahead and try it...
+</p>
+</div>
+<div class="post"><h2>gremlins</h2>
+  <ul>
+<li>No fancy pattern features</li>
+<li>No infix pattern synonyms</li>
+  </ul>
+</div>
+
+		</div>
+
+
+
+<div id="footer">
+	<p>
+ this page uses parts of the Kubrick wordpress style,
+   as knocked about a bit by Peter Morris, then travestied by Conor
+	</p>
+</div>
+</div>
+</body>
+</html>

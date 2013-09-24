@@ -1,0 +1,219 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head profile="http://gmpg.org/xfn/1">
+	<title>The Strathclyde Haskell Enhancement</title>
+	
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	
+	<link rel="stylesheet" href="layout.css" type="text/css" media="screen" />
+
+	<style type="text/css" media="screen">
+
+		/* BEGIN IMAGE CSS */
+			/*	To accomodate differing install paths of WordPress, images are referred only here,
+				and not in the wp-layout.css file. If you prefer to use only CSS for colors and what
+				not, then go right ahead and delete the following lines, and the image files. */
+			
+			body	 	{ background: url("webstuff/kubrickbgcolor.jpg"); }				
+			#page		{ background: url("webstuff/kubrickbgwide.jpg") repeat-y top; border: none; } 			
+			#header 	{ background: url("webstuff/kubrickheader.jpg") no-repeat bottom center; }
+			#footer 	{ background: url("webstuff/kubrickfooter.jpg") no-repeat bottom; border: none;}
+			
+			
+			/*	Because the template is slightly different, size-wise, with images, this needs to be set here
+				If you don't want to use the template's images, you can also delete the following two lines. */
+			
+			#header 	{ margin: 0 !important; margin: 0 0 0 1px; padding: 1px; height: 204px; width: 758px; }
+			#headerimg 	{ margin: 7px 9px 0; height: 190px; width: 740px; } 
+		/* END IMAGE CSS */
+		
+	</style>
+<meta name='ICBM' content="0, 0" />
+<meta name='DC.title' content="The Strathclyde Haskell Enhancement" />
+<meta name='geo.position' content="0;0" />
+</head>
+<body>
+
+<div id="page">
+
+<div id="header">
+
+	<div id="headerimg">
+		<h1>the Strathclyde Haskell Enhancement</h1>
+<div class="description">being a preprocessor with divers functionality</div>
+
+
+	</div>
+</div>
+<hr />
+	<div id="content" class="narrowcolumn">
+
+
+
+<div class="post"><h2>please won't you tell me who is she?</h2>
+<p>
+The Strathclyde Haskell Enhancement is an experimental preprocessor for the
+  <a href="http://haskell.org/ghc/">Glasgow Haskell Compiler</a>, concocted
+  hastily by <a href="http://strictlypositive.org/">Conor</a> <a href="http://personal.cis.strath.ac.uk/~conor/">McBride</a>
+  at the University of Strathclyde. Its current functionality includes
+  <ul>
+    <li> <a href="faking.html">types indexed by data</a> </li>
+    <li> <a href="pi.html">pi types</a> </li>
+    <li> <a href="patsy.html">pattern synonyms</a> &mdash;
+      definitions you can use on left and right </li>
+    <li> support for a <a href="higpig.html">crude</a> kind of
+      aspect-oriented programming </li>
+    <li> <a href="idiom.html">idiom brackets</a>, for effectful programming in applicative style </li>
+    <li> <a href="superclass.html">default superclass instances</a>
+           which you can switch off </li>
+    <li> <b>codata</b> is a keyword (meaning <b>data</b>, but
+	   documenting an infinitary intention)</li>
+  </ul>
+Its main function is to support its author's foibles in the process of
+<a href="http://www.e-pig.org/epilogue">implementing</a>
+    <a href="http://www.e-pig.org/">Epigram</a>, but it's also a test bed
+    for experimental Haskell features. At this stage in its
+    life cycle, it's unlikely to be particularly robust. You'll find that its
+    error support is fantastic, if you need help making errors.
+</p>
+</div>
+
+<div class="post"><h2>getting it and doing it</h2>
+<p>
+  If you try (possibly after a cabal update)
+  <blockquote>
+     cabal install she
+  </blockquote><br/>
+  you may find you're in business. The intrepid among you may prefer
+  <blockquote>
+     darcs get <a href="http://personal.cis.strath.ac.uk/~conor/pub/she/">http://personal.cis.strath.ac.uk/~conor/pub/she/</a><br/>
+     cd she</br/>
+     cabal install
+  </blockquote><br/>
+</p>
+  <p>
+  Once she's installed, you should find that she's executable. Your best
+  bet is to let ghc do the talking. The incantation for the top of your file is
+  <blockquote>
+  {-# OPTIONS_GHC -F -pgmF she #-}
+  </blockquote><br/>
+  which means she gets called as a Haskell preprocessor, after your bird tracks have
+  been stripped, but before much else happens. Works fine in ghci too.
+  </p>
+  <p>
+  If you want to inspect the mess she makes of your lovely program, you could do worse
+  than
+  <blockquote>
+  ghc -E Lovely.lhs<br/>
+  more Lovely.hspp
+  </blockquote><br/>
+  </p>
+  and compare it to a summer's day. Meanwhile, you might also look at the funny extra
+  file she's made
+  <blockquote>
+  more Lovely.hers
+  </blockquote><br/>
+  which is probably empty, because you haven't done anything yet.
+</div>
+
+
+
+<div class="post"><h2>getting on with it</h2>
+<p>
+  If you want to play, don't wait for me to WTFM. Look in the
+  <a href="examples/">examples</a> directory and get cracking.
+  </p>
+  <p>
+  Here's the manual, so far.
+  <ul>
+    <li><a href="faking.html">type level data</a></li>
+    <li><a href="pi.html">pi types</a></li>
+    <li><a href="patsy.html">pattern synonyms</a></li>
+    <li><a href="higpig.html">code displacement and accumulation</a> for
+         aspects on the cheap</li>
+    <li><a href="idiom.html">idiom brackets</a></li>
+    </ul>
+  </p>
+</div>
+
+
+
+<div class="post"><h2>watch this space</h2>
+<p>
+Features to fix and bugs to add!
+  <ul><li> a translator from
+  simple first-order programs to type families</li>
+  <li>monadic case and if</li>
+  <li>constructing free monads from signatures</li>
+  <li>making newtypes instances of class Newtype</li>
+  </ul>
+  </p>
+</div>
+
+		</div>
+
+		<div id="sidebar">
+<small>
+		  <p>
+  I wrote <i>she</i> over a couple of weekends in my flat
+  overlooking Kelvingrove Park and Glasgow Uni. Brute force and ignorance is
+  the philosophy at work. The hardest part was getting
+  the layout rule to behave sensibly. If you want to have a crack at this sort
+  of thing, take a look at <a href="src/HaLay.lhs">HaLay.hs</a> for a looyah
+  experience &mdash; far too big and not clever enough, but it's some sort of
+  approximation.
+		  </p>
+		  <p>
+  It would have been too much work to write a full Haskell parser. I could have
+  tried tweaking <a href="http://www.cs.chalmers.se/~d00nibro/haskell-src-exts/">Niklas
+  Broberg's toolkit</a> but my appetite for negotiating with happy is limited. I
+  used a bargain basement parser combinator library
+  <a href="src/Parsley.lhs">Parsley.lhs</a> which took no time flat to write, but
+  probably longer to run. I'm sure a much quicker drop-in replacement is out there
+  somewhere. Note, however, that my machinery is very careful to retain the whole of
+  the layout information, so that she can reconstitute the file with the minimum of
+  disturbance. Hat-tip to the
+  <a href="http://www.cs.kent.ac.uk/projects/refactor-fp/hare.html">HaRe</a> crew.
+		  </p>
+		  <p>
+  The low-budget alternative to parsing is markup, and that's what I do: I group the
+  tokens according to the bracket/layout structure, with layout regions chopped up into
+  their logical lines (interspersed with hunks of whitespace/comment). I also crudely
+  chunk out the regions which live in the type syntax, and in the kind syntax, as I
+  need to treat them specially! Note that parser combinators work perfectly well on
+  nested syntaxes. I also wrote a rock-bottom rewriting strategy combinator to do
+  the heavy lifting. As a result, <a href="src/TypesToKinds.lhs">TypesToKinds</a> is
+  super-cheap.
+		  </p>
+		  <p>
+  The type-level version of data is made by declaring dummy type constructors the
+  same arity as your data constructors: she prepends SheTy (sorry, Shilpa) to the
+  names of your prefix constructors and :$#$#$# (expletive deleted) to your infix
+  constructors. By the way, you now need {-# LANGUAGE TypeOperators #-} if you want
+  to declare infix <i>data</i> constructors!
+		  </p>
+<p>
+  Pattern synonyms are a bit of a <a href="src/Patsy.lhs">hack</a>. They only come
+  in prefix: you won't catch me implementing operator precedence in a hurry. The
+  upshot is that we only need to look for Big Letters in non-type regions and we're
+  basically there: then it's on-the-fly application parsing. There's no checking
+  of linearity (or anything!) but your pattern synonym is left in the file as a
+  function with patsy prepended to its name, like Lee Harvey Oswald.
+</p>
+		  <p>
+	<img src="window-glasgow-uni.jpg" width=220 />
+		  </p>
+		  </small>
+</div>
+
+
+
+<div id="footer">
+	<p>
+ this page uses parts of the Kubrick wordpress style,
+   as knocked about a bit by Peter Morris, then travestied by Conor
+	</p>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,154 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head profile="http://gmpg.org/xfn/1">
+	<title>The Strathclyde Haskell Enhancement</title>
+	
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	
+	<link rel="stylesheet" href="layout.css" type="text/css" media="screen" />
+
+	<style type="text/css" media="screen">
+
+		/* BEGIN IMAGE CSS */
+			/*	To accomodate differing install paths of WordPress, images are referred only here,
+				and not in the wp-layout.css file. If you prefer to use only CSS for colors and what
+				not, then go right ahead and delete the following lines, and the image files. */
+			
+			body	 	{ background: url("webstuff/kubrickbgcolor.jpg"); }				
+			#page		{ background: url("webstuff/kubrickbgwide.jpg") repeat-y top; border: none; } 			
+			#header 	{ background: url("webstuff/kubrickheader.jpg") no-repeat bottom center; }
+			#footer 	{ background: url("webstuff/kubrickfooter.jpg") no-repeat bottom; border: none;}
+			
+			
+			/*	Because the template is slightly different, size-wise, with images, this needs to be set here
+				If you don't want to use the template's images, you can also delete the following two lines. */
+			
+			#header 	{ margin: 0 !important; margin: 0 0 0 1px; padding: 1px; height: 204px; width: 758px; }
+			#headerimg 	{ margin: 7px 9px 0; height: 190px; width: 740px; } 
+		/* END IMAGE CSS */
+		
+	</style>
+<meta name='ICBM' content="0, 0" />
+<meta name='DC.title' content="The Strathclyde Haskell Enhancement" />
+<meta name='geo.position' content="0;0" />
+</head>
+<body>
+
+<div id="page">
+
+<div id="header">
+
+	<div id="headerimg">
+		<h1>she's super classy</h1>
+<div class="description">default superclass instances</div>
+
+
+	</div>
+</div>
+<hr />
+	<div id="content" class="widecolumn">
+
+
+
+<div class="post"><h2>default superclass instances in classes</h2>
+<p>
+  <a href="./">She</a> lets you add instance declarations to classes:
+  <blockquote>
+  <b>class</b> <i>Su</i> <i>x</i> <b>=&gt;</b> <i>Cl</i> <i>x</i> <b>where</b><br/>
+  &nbsp; <i>cloo</i> :: <i>foo</i> <i>x</i>  <br/>
+  &nbsp; <b>instance</b> <i>Su</i> <i>x</i> <b>where</b> <br/>
+  &nbsp; &nbsp; <i>sloo</i> :: <i>goo</i> <i>x</i>
+ </blockquote>
+  </p>
+  <p>It's not at all necessary to define all the methods of the
+  superclass in such a default instance, as you can add the rest
+  elsewhere.
+  </p>
+  <p><b>NB</b>, at the moment, <a href="./">She</a> does not
+    insert the superclass constraint <i>Su</i> <i>x</i> <b>=&gt;</b>
+    for you. Do it yourself: arguably, it's better documentation,
+    but that's not my real reason. I want to experiment with
+    higher-order fake (because inexpressible) superclasses,
+    in my own time...
+  </p>
+  <p>
+  The idea goes back to a 2006 suggestion by 
+  <a href="http://www.haskell.org//pipermail/haskell-prime/2006-August/001587.html">J&oacute;n Fairbairn</a>.
+  </p>
+</div>
+<div class="post"><h2>what happens in instances?</h2>
+<p>
+When you declare an instance of <i>Cl</i>, <a href="./">She</a>
+  unpacks it to separate <i>Cl</i> and <i>Su</i> instances. So
+   <blockquote>
+  <b>instance</b> <i>Cl S</i> <b>where</b><br/>
+  &nbsp; <i>cloo</i> = <i>myfoo</i>  <br/>
+</blockquote>
+gives me an instance <i>Su S</i> with the default <i>sloo</i>
+  implementation.
+  </p>
+
+  <p>
+  You
+  can add other <i>Su</i> methods and override the default definitions
+  provided by the instance inside <i>Cl</i>. Don't declare a
+  subordinate superclass instance for them, just dump them in
+  and <a href="./">She</a> will sort the methods by which class owns
+  what.
+  </p>
+    <blockquote>
+  <b>instance</b> <i>Cl S</i> <b>where</b><br/>
+  &nbsp; <i>cloo</i> = <i>myfoo</i>  <br/>
+  &nbsp; <i>sloo</i> = <i>overridegoo</i></i>
+ </blockquote>
+
+  <p>Bright folk will have noticed that a multiparameter class can
+  have two superclasses with the same class-former. This will fox my
+  overriding machinery. In that case, either you're in or you're out.
+  (The principled way to handle this would be to allow subordinate
+  superclass instances for purposes of disambiguation.)
+  </p>
+</div>
+<div class="post"><h2>can I switch it off?</h2>
+<p>
+  If you don't want the default instance, because you're getting an
+  instance from elsewhere, just say
+    <blockquote>
+  <b>instance</b> <i>Cl S</i> <b>where</b><br/>
+  &nbsp; <i>cloo</i> = <i>myfoo</i>  <br/>
+  &nbsp; <b>hiding instance</b> <i>Su S</i></i>
+    </blockquote>
+  and you'll get <i>Cl S</i> without <i>Su S</i> (or any of its
+  default superclass instances). Oh, and if <i>Su</i> has default
+  superclass instances, you can hide any of them in <i>Cl</i> and
+  still keep <i>Su</i>: prune the tree anywhere! (Note that this
+  will allow you to define a Monad, keep its default Applicative,
+  but hide its default Functor.)
+</p>
+</div>
+<div class="post"><h2>gremlins</h2>
+  <ul>
+<li>No checking in situ: just blind macro expansion.
+      Go on, blow it up!</li>
+<li>Multiple superclasses with the same class-former won't really
+      play nicely.</li>
+<li>She mostly knows about classes only from modules She's processed, of
+      course.</li>
+<li>Some standard superclasses are now baked in. Here's the definitive
+      source on which: <a href="src/ShesHers.lhs">ShesHers.lhs</a>.</li>
+  </ul>
+</div>
+
+		</div>
+
+
+
+<div id="footer">
+	<p>
+ this page uses parts of the Kubrick wordpress style,
+   as knocked about a bit by Peter Morris, then travestied by Conor
+	</p>
+</div>
+</div>
+</body>
+</html>
